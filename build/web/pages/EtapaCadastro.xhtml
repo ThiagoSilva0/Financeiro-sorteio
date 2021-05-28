@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:viewParam name="etaAcao" value="#{etapaBean.acao}"/>
+                <f:viewParam name="etaCod" value="#{etapaBean.id}"/>
+                <f:event listener="#{etapaBean.carregarCadastro()}" type="preRenderView"/>
+            </f:metadata>
+        </ui:define>
+
+        <ui:define name="conteudo">
+            <h:form id="frmCadEta">
+                
+                
+                <script>
+                        PrimeFaces.locales['pt'] = {
+                            closeText: 'Fechar',
+                            prevText: 'Anterior',
+                            nextText: 'Próximo',
+                            currentText: 'Começo',
+                            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                            dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                            weekHeader: 'Semana',
+                            firstDay: 1,
+                            isRTL: false,
+                            showMonthAfterYear: false,
+                            yearSuffix: '',
+                            timeOnlyTitle: 'Só Horas',
+                            timeText: 'Tempo',
+                            hourText: 'Hora',
+                            minuteText: 'Minuto',
+                            secondText: 'Segundo',
+                            currentText: 'Data Atual',
+                            ampm: false,
+                            month: 'Mês',
+                            week: 'Semana',
+                            day: 'Dia',
+                            allDayText: 'Todo Dia'
+                        };
+                    </script>
+                
+                
+                <p:toolbar>
+                    <f:facet name="left">
+
+                        <p:outputLabel value="#{etapaBean.acao} etapa" style="text-transform: uppercase"/>
+                    </f:facet>
+                </p:toolbar>
+
+                <h:panelGrid columns="2"  >
+
+                    <p:outputLabel value="Edição:"/>
+                    <p:inputText value="#{etapaBean.etapa.edicao}" readonly="#{etapaBean.acao == 'excluir'}" size="5"/>
+                    
+                    
+                    <p:outputLabel value="Data da edição:"/>
+                    <p:datePicker id="dataEdicao" value="#{etapaBean.etapa.dataEdicao}" readonly="#{etapaBean.acao == 'excluir'}" showIcon="true" locale="pt"/>
+
+                    
+                    
+                    <p:outputLabel value="Valor do titulo:"/>
+                    <p:inputText value="#{etapaBean.etapa.valorTitulo}" readonly="#{etapaBean.acao == 'excluir'}" size="15"/>
+                    
+                    
+                    
+                    
+                    <p:outputLabel value="Situação etapa" />
+                    <p:selectOneMenu value="#{etapaBean.etapa.situacao}" >
+                        <f:selectItem itemLabel="Selecione a situação"/>
+                        <f:selectItem itemLabel="Aberta" itemValue="a"/>
+                        <f:selectItem itemLabel="Fechada" itemValue="f"/>
+                        
+                    </p:selectOneMenu>
+                    
+                </h:panelGrid>
+                <h:panelGrid columns="5">
+                    <p:commandButton id="salvar" rendered="#{etapaBean.acao == 'novo'}" actionListener="#{etapaBean.salvar()}" icon="pi pi-save" update="msgGlobal :frmCadEta"/>
+                    <p:commandButton id="novo" rendered="#{etapaBean.acao == 'novo'}" actionListener="#{etapaBean.novo()}" icon="pi pi-user-plus" update="msgGlobal :frmCadEta"/>
+                    <p:commandButton id="editar" rendered="#{etapaBean.acao == 'editar'}" actionListener="#{etapaBean.editar()}" icon="pi pi-pencil" update="msgGlobal :frmCadEta"/>
+                    <p:commandButton id="excluir" rendered="#{etapaBean.acao == 'excluir'}" actionListener="#{etapaBean.excluir()}" icon="pi pi-trash" update="msgGlobal :frmCadEta"/>
+                    <p:button id="voltar" icon="pi pi-chevron-left" outcome="/pages/EtapaPesquisa.xhtml?faces-redirect=true"/>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

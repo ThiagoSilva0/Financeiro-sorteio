@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+        <ui:define name="metaData">
+            <f:metadata>
+
+                <f:viewParam name="desCod" value="#{despesaDistribuidorBean.id}"/>
+                <f:viewParam name="desAcao" value="#{despesaDistribuidorBean.acao}"/>
+                <f:event listener="#{despesaDistribuidorBean.carregarDespesas()}" type="preRenderView"/>
+                <f:event listener="#{despesaDistribuidorBean.carregarDistribuidor()}" type="preRenderView"/>
+
+            </f:metadata>
+        </ui:define>
+
+        <ui:define name="conteudo">
+            <p:toolbar>
+                <f:facet name="left">
+
+                    <p:outputLabel value="#{despesaDistribuidorBean.acao} Despesa" style="text-transform: uppercase"/>
+                </f:facet>
+            </p:toolbar>
+
+            <h:form id="desCad">
+                <br/>
+                <strong><p:outputLabel value="Despesas distribuidor" style="font-size: 16px"/></strong>
+                <br/> <br/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Distribuidor" />
+                    <p:selectOneMenu value="#{despesaDistribuidorBean.distribuidor}" converter="distribuidorConverter" rendered="#{despesaDistribuidorBean.acao == 'novo'}" >
+                        <f:selectItem itemLabel="Selecione o distribuidor" noSelectionOption="true"/>
+                        <f:selectItems value="#{despesaDistribuidorBean.listaDistribuidor}" var="distribuidor"
+                                       itemLabel="#{distribuidor.nome}" itemValue="#{distribuidor}"/>
+                    </p:selectOneMenu>
+                    <p:inputText value="#{despesaDistribuidorBean.despesaDistribuidor.distribuidor.nome}" readonly="true" rendered="#{despesaDistribuidorBean.acao != 'novo'}"/>
+
+                    <p:outputLabel value="Descrição"/>
+                    <p:selectOneMenu value="#{despesaDistribuidorBean.despesaDistribuidor.descricao}"  >
+                        <f:selectItem itemLabel="Selecione a descrição" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="SEM DESPESA" itemValue="SEM DESPESA"/>
+                        <f:selectItem itemLabel="OPE-Ações de venda-Aluguel carro (Prêmio)" itemValue="OPE-Ações de venda-Aluguel carro (Prêmio)"/>
+                        <f:selectItem itemLabel="OPE-Escaneamento-Despesa com pessoal" itemValue="OPE-Escaneamento-Despesa com pessoal"/>
+                        <f:selectItem itemLabel="OPE-Ações de venda-Carro de som" itemValue="OPE-Ações de venda-Carro de som"/>
+                        <f:selectItem itemLabel="OPE-Espaço-Aluguel/Taxa" itemValue="OPE-Espaço-Aluguel/Taxa"/>
+                        <f:selectItem itemLabel="OPE-Ações de venda-Entrega de prêmio" itemValue="OPE-Ações de venda-Entrega de prêmio"/>
+                        <f:selectItem itemLabel="OPE-Ações de venda-Locução" itemValue="OPE-Ações de venda-Locução"/>
+                        <f:selectItem itemLabel="OPE-Ações de venda-Prancha/trio" itemValue="OPE-Ações de venda-Prancha/trio"/>
+                        <f:selectItem itemLabel="OPE-Ações de venda-Promotoras (formiguinhas)" itemValue="OPE-Ações de venda-Promotoras (formiguinhas)"/>
+                        <f:selectItem itemLabel="OPE-Distribuidores-Ajuda de custo" itemValue="OPE-Distribuidores-Ajuda de custo"/>
+                        <f:selectItem itemLabel="OPE-Premiação-Pé Quente" itemValue="OPE-Premiação-Pé Quente"/>
+                        <f:selectItem itemLabel="OPE-Segurança-Escolta" itemValue="OPE-Segurança-Escolta"/>
+                        <f:selectItem itemLabel="OPE-Distribuidores-Despesas não especificadas" itemValue="OPE-Distribuidores-Despesas não especificadas"/>
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel value="Valor"/>
+                    <p:inputText value="#{despesaDistribuidorBean.despesaDistribuidor.valor}"/>
+                </h:panelGrid>
+                <h:panelGrid columns="5">
+
+                    <p:button id="voltar" icon="pi pi-chevron-left" outcome="/pages/VendaEdicaoPesquisa.xhtml?faces-redirect=true"/>
+                    <p:commandButton actionListener="#{despesaDistribuidorBean.salvar()}" rendered="#{despesaDistribuidorBean.acao == 'novo'}" icon="pi pi-save" update="msgGlobal :desCad" />
+                    <p:commandButton actionListener="#{despesaDistribuidorBean.excluir()}" rendered="#{despesaDistribuidorBean.acao == 'excluir'}" icon="pi pi-trash" update="msgGlobal :desCad" />
+                    <p:commandButton actionListener="#{despesaDistribuidorBean.editar()}" rendered="#{despesaDistribuidorBean.acao == 'editar'}" icon="pi pi-pencil" update="msgGlobal :desCad" />
+                    <p:button value="Adicionar venda" outcome="/pages/VendaEdicaoCadastro.xhtml?faces-redirect=true" >
+                        <f:param name="codDis" value="#{despesaDistribuidorBean.distribuidor.id}"/>
+                        <f:param name="venAcao" value="novo"/>
+                    </p:button>
+
+
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

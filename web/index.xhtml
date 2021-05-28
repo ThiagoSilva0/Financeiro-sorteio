@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Login</title>
+    </h:head>
+    <h:body>
+        <p:growl id="msgGlobal" sticky="true"/>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="center" resizable="false" closable="false" collapsible="false">
+
+
+                <div  style="margin-top: 12%;margin-left: 40%">
+
+
+
+
+                                        <h:form id="frmLog" >
+                                            
+                                            <h:panelGrid columns="3" >
+                                                <f:facet name="header">
+                                                    <img src="resources/logo_capemisa.png" style=" height: 110px; width: 200px" />
+                                                   
+                                                </f:facet>
+                                                <p:outputLabel value="LOGIN"/>
+                                                <p:inputText value="#{autenticacaoBean.usuarioLogado.login}"/>
+                                                <i class="pi pi-user"></i>
+                    
+                                                <p:outputLabel value="SENHA"/>
+                                                <p:password value="#{autenticacaoBean.usuarioLogado.senha}"/>
+                                                <i class="pi pi-key"></i>
+                                                
+                                                <p:outputLabel/>
+                                                <p:commandButton action="#{autenticacaoBean.autenticar()}" value="Acessar " icon="pi pi-sign-in" update=":msgGlobal"/>
+                                            </h:panelGrid>
+                                        </h:form>
+
+
+<!--                    <h:form id="frmAut">
+                        <h:panelGrid id="pnlAut" columns="2">
+                            <p:outputLabel value="Login" />
+                            <p:inputText value="#{autenticacaoBean.usuarioLogado.login}"  />
+                                
+                            
+
+                            <p:outputLabel value="Senha" />
+                            <p:password value="#{autenticacaoBean.usuarioLogado.senha}">
+                                <f:validateBean/>
+                            </p:password>
+                        </h:panelGrid>
+                        <h:panelGrid>
+                            <p:commandButton value="Acessar" action="#{autenticacaoBean.autenticar()}" update=":msgGlobal "/>  
+                        </h:panelGrid>
+                    </h:form>-->
+
+
+                </div>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>
+

@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:viewParam name="disAcao" value="#{distribuidorBean.acao}" />
+                <f:viewParam name="disCod" value="#{distribuidorBean.codigo}"/>
+                <f:event listener="#{distribuidorBean.carregarCadastro()}" type="preRenderView"/>
+            </f:metadata>
+        </ui:define>
+
+        <ui:define name="conteudo">
+            <p:toolbar>
+                <f:facet name="left">
+
+                    <p:outputLabel value="#{distribuidorBean.acao} Distribuidor" style="text-transform: uppercase"/>
+                </f:facet>
+            </p:toolbar>
+
+           
+            <h:form id="cadDis">
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel value="Nome"/>
+                    <p:inputText readonly="#{distribuidorBean.acao == 'excluir'}" value="#{distribuidorBean.distribuidor.nome}" size="30"/>
+
+                    <p:outputLabel value="CPF"/>
+                    <p:inputMask readonly="#{distribuidorBean.acao == 'excluir'}" value="#{distribuidorBean.distribuidor.cpf}" mask="999.999.999-99"/>
+
+                    <p:outputLabel value="Telefone"/>
+                    <p:inputMask readonly="#{distribuidorBean.acao == 'excluir'}" value="#{distribuidorBean.distribuidor.telefone}" mask="(99) 9.9999-9999"/>
+
+                    <p:outputLabel value="Área do distribuidor"/>
+                    <p:inputText readonly="#{distribuidorBean.acao == 'excluir'}" value="#{distribuidorBean.distribuidor.area}" size="35"/>
+
+                    <p:outputLabel value="Comissão %"/>
+                    <p:inputText readonly="#{distribuidorBean.acao == 'excluir'}" value="#{distribuidorBean.distribuidor.comissao}" size="5"/>
+
+                    <p:outputLabel />
+                </h:panelGrid>
+                <h:panelGrid columns="5">
+                    <p:commandButton id="salvar" rendered="#{distribuidorBean.acao == 'novo'}" actionListener="#{distribuidorBean.salvar()}" icon="pi pi-save" update=":msgGlobal :cadDis"/>
+                    <p:commandButton id="novo" rendered="#{distribuidorBean.acao == 'novo'}" actionListener="#{distribuidorBean.novo()}" icon="pi pi-user-plus" update=":msgGlobal :cadDis"/>
+                    <p:commandButton id="editar" rendered="#{distribuidorBean.acao == 'editar'}" actionListener="#{distribuidorBean.editar()}" icon="pi pi-pencil" update=":msgGlobal :cadDis"/>
+                    <p:commandButton id="excluir" rendered="#{distribuidorBean.acao == 'excluir'}" actionListener="#{distribuidorBean.excluir()}" icon="pi pi-trash" update=":msgGlobal :cadDis"/>
+                    <p:button id="voltar" icon="pi pi-chevron-left" outcome="/pages/DistribuidorPesquisa.xhtml?faces-redirect=true"/>
+
+                </h:panelGrid>
+                
+                
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

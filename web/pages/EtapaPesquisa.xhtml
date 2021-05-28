@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:event listener="#{etapaBean.listar()}" type="preRenderView"/>
+            </f:metadata>
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="etaPes">
+                <p:toolbar>
+                    <f:facet name="left">
+
+                        <p:outputLabel value="ETAPAS"/>
+
+                    </f:facet>
+                </p:toolbar>
+
+                <p:dataTable value="#{etapaBean.listaEtapa}" var="etapa" emptyMessage="Nenhum distribuidor encontrado"
+                             paginator="true" rows="5">
+
+
+
+                    <p:column headerText="Edição" width="6%">
+                        <p:outputLabel value="#{etapa.edicao}" />
+                    </p:column>
+
+                    <p:column headerText="Data da edição" width="12%">
+                        <p:outputLabel value="#{etapa.dataEdicao}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:outputLabel>
+                    </p:column>
+
+                    <p:column headerText="Data da criação" width="22%">
+                        <p:outputLabel value="#{etapa.dataCriacao}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:outputLabel>
+                    </p:column>
+
+                    <p:column headerText="Valor do titulo" width="12%">
+                        <p:outputLabel value="R$ #{etapa.valorTitulo}"/>
+                    </p:column>
+
+                    <p:column headerText="Usuário ">
+                        <p:outputLabel value="#{etapa.usuario.nome}"/>
+                    </p:column>
+
+                    <p:column headerText="Saldo" width="10%">
+                        <p:outputLabel value="R$ #{etapa.saldoEtapa}"  style="#{etapa.saldoEtapa >= 0 ? 'color: blue':'color: red'}"/>
+                    </p:column>
+
+                    <p:column headerText="Situação" width="8%">
+                        <p:outputLabel value="#{etapa.situacao == 'a' ? 'aberta':'fechada'}"/>
+                    </p:column>
+
+                    <p:column headerText="Opções" width="8%">
+                        <p:button id="excluir" icon="pi pi-trash" outcome="/pages/EtapaCadastro.xhtml?faces-redirect=true">
+                            <f:param name="etaAcao" value="excluir"/> 
+                            <f:param name="etaCod" value="#{etapa.id}"/> 
+                        </p:button>
+
+                        <p:button id="editar" icon="pi pi-pencil" outcome="/pages/EtapaCadastro.xhtml?faces-redirect=true">
+                            <f:param name="etaAcao" value="editar"/> 
+                            <f:param name="etaCod" value="#{etapa.id}"/> 
+                        </p:button>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:button id="novo" icon="pi pi-user-plus" outcome="/pages/EtapaCadastro.xhtml?faces-redirect=true">
+
+                            <f:param name="etaAcao" value="novo"/>
+
+                        </p:button>
+                    </f:facet>
+
+
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

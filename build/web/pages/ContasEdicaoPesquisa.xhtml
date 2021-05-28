@@ -1,0 +1,89 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:event listener="#{contasEdicaoBean.listar()}" type="preRenderView"/>
+
+            </f:metadata>
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="conPes">
+                <p:toolbar>
+                    <f:facet name="left">
+
+                        <p:outputLabel value="CONTAS DA EDIÇÃO, #{selecionarEtapaBean.etapaSelecionada.edicao} - #{selecionarEtapaBean.etapaSelecionada.dataEdicao} "/>
+                        <p:button outcome="/pages/ContasEdicaoCadastro.xhtml?faces-redirect=true" icon="pi pi-user-plus" rendered="#{autenticacaoBean.usuarioLogado.tipo == 'f'}">
+                            <f:param name="conAcao" value="novo"/>
+                        </p:button> 
+                    </f:facet>
+                </p:toolbar>
+
+                <p:dataTable emptyMessage="Nenhuma conta encontrada" value="#{contasEdicaoBean.listaContas}" var="conta">
+
+                    <p:column headerText="Descrição">
+                        <p:outputLabel value="#{conta.descricao}"/>
+                    </p:column>
+
+                    <p:column headerText="Situação" width="6.5%">
+                        <p:outputLabel value="#{conta.situacao == 'a' ? 'ABERTA':'PAGA'}" style="#{conta.situacao == 'a' ? 'color: red':'color: #1E90FF'}"/>
+                    </p:column>
+
+                     <p:column headerText="Fornecedor">
+                        <p:outputLabel value="#{conta.fornecedor.razaoSocial}"/>
+                    </p:column>
+                    
+                     <p:column headerText="Plano de contas">
+                        <p:outputLabel value="#{conta.planoDeContas.setor} - #{conta.planoDeContas.descricao}"/>
+                    </p:column>
+
+                    
+                    <p:column headerText="Previsto" width="6.5%">
+                        <p:outputLabel value="#{conta.valor}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Pago" width="6.5%">
+                        <p:outputLabel value="#{conta.situacao == 'a' ? '':conta.valorPago}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Diferença" width="7.2%">
+                        <p:outputLabel value="#{conta.situacao == 'a' ? '':conta.valorDifenca}"/>
+                    </p:column>
+
+                    <p:column headerText="Froma PGTO" width="6.5%">
+                        <p:outputLabel value="#{conta.formaDePagamento}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Documento" width="8.5%">
+                        <p:outputLabel value="#{conta.documento}"/>
+                    </p:column>
+
+                   
+
+                    <p:column headerText="Opções" width="12%" rendered="#{autenticacaoBean.usuarioLogado.tipo == 'f' or conta.situacao != 'p'}">
+                        <p:button icon="pi pi-money-bill" outcome="/pages/PagarContas.xhtml?faces-redirect=true" rendered="#{conta.situacao != 'p'}">
+                            <f:param name="conAcao" value="pagar"/>
+                            <f:param name="conCod" value="#{conta.id}"/>
+                        </p:button>
+
+                        <p:button icon="pi pi-trash" outcome="/pages/ContasEdicaoCadastro.xhtml?faces-redirect=true" rendered="#{conta.situacao != 'p'}">
+                            <f:param name="conAcao" value="excluir"/>
+                            <f:param name="conCod" value="#{conta.id}"/>
+                        </p:button>
+
+                        <p:button icon="pi pi-pencil" outcome="/pages/ContasEdicaoCadastro.xhtml?faces-redirect=true" rendered="#{autenticacaoBean.usuarioLogado.tipo == 'f' and conta.situacao != 'p'}">
+                            <f:param name="conAcao" value="editar"/>
+                            <f:param name="conCod" value="#{conta.id}"/>
+                        </p:button>
+
+
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

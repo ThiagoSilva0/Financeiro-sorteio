@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:event listener="#{distribuidorBean.listar()}" type="preRenderView"/>
+            </f:metadata>
+        </ui:define>
+        <ui:define name="conteudo">
+
+
+            <p:toolbar>
+                <f:facet name="left">
+
+                    <p:outputLabel value="DISTRIBUIDORES"/>
+
+                </f:facet>
+            </p:toolbar>
+
+            <h:form>
+
+
+
+                <p:dataTable id="tblDistribuidor" emptyMessage="Nenhum distribuidor encontrado" value="#{distribuidorBean.listaDistribuidor}" 
+                             var="distribuidor" paginator="true" rows="5">
+
+
+                    <p:column headerText="Código" width="5%">
+                        <h:outputText value=" #{distribuidor.id}"/> 
+                    </p:column>
+
+                    <p:column headerText="Nome" width="15%">
+                        <h:outputText value="#{distribuidor.nome}" />
+                    </p:column>
+
+                    <p:column headerText="CPF" width="8%">
+                        <h:outputText value="#{distribuidor.cpf}"/>
+                    </p:column>
+
+                    <p:column headerText="Telefone" width="9%">
+                        <h:outputText value="#{distribuidor.telefone}"/>
+                    </p:column>
+
+                    <p:column headerText="Area" width="13%">
+                        <h:outputText value="#{distribuidor.area}"/>
+                    </p:column>
+
+                    <p:column headerText="Comissão %" width="7%" >
+                        <h:outputText value="#{distribuidor.comissao}"/>
+                    </p:column>
+
+                    <p:column headerText="Saldo" width="4%">
+                        <h:outputText value="#{distribuidor.saldo}" style="#{distribuidor.saldo >= 0 ? 'color: blue':'color: red'}"/>
+                    </p:column>
+
+                    <p:column headerText="Opções" width="6%">
+
+                        <p:button id="excluir" icon="pi pi-trash" outcome="/pages/DistribuidorCadastro.xhtml?faces-redirect=true">
+                            <f:param name="disAcao" value="excluir"/>
+                            <f:param name="disCod" value="#{distribuidor.id}"/>
+                        </p:button>
+
+                        <p:button id="editar" icon="pi pi-pencil" outcome="/pages/DistribuidorCadastro.xhtml?faces-redirect=true">
+                            <f:param name="disAcao" value="editar"/>
+                            <f:param name="disCod" value="#{distribuidor.id}"/>
+                        </p:button>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:button id="novo" icon="pi pi-user-plus" outcome="/pages/DistribuidorCadastro.xhtml?faces-redirect=true">
+                            <f:param name="disAcao" value="novo"/>
+                        </p:button>
+
+                    </f:facet>
+                </p:dataTable>
+
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

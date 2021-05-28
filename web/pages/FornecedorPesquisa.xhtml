@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:event listener="#{fornecedorBean.listar()}" type="preRenderView"/>
+            </f:metadata>
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="etaPes">
+                <p:toolbar>
+                    <f:facet name="left">
+
+                        <p:outputLabel value="FORNECEDORES"/>
+                       
+                    </f:facet>
+                </p:toolbar>
+                
+                
+                <p:dataTable emptyMessage="Nenhum fornecedor encontrado" value="#{fornecedorBean.listaFornecedor}" var="fornecedor"
+                             paginator="true" rows="5">
+                    
+                    <p:column headerText="Código" width="6%">
+                        <p:outputLabel value="#{fornecedor.id}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Razão Social">
+                        <p:outputLabel value="#{fornecedor.razaoSocial}"/>
+                    </p:column>
+                    
+                    <p:column headerText="CNPJ" width="15%">
+                        <p:outputLabel value="#{fornecedor.cnpj}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Tipo de serviço" width="20%">
+                        <p:outputLabel value="#{fornecedor.tipoServico}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Opçoes" width="8%">
+                        <p:button id="excluir" icon="pi pi-trash" outcome="/pages/FornecedorCadastro.xhtml?faces-redirect=true">
+                            <f:param name="forAcao" value="excluir"/>
+                            <f:param name="forCod" value="#{fornecedor.id}"/>
+                        </p:button>
+                        <p:button id="editar" icon="pi pi-pencil" outcome="/pages/FornecedorCadastro.xhtml?faces-redirect=true">
+                            <f:param name="forAcao" value="editar"/>
+                            <f:param name="forCod" value="#{fornecedor.id}"/>
+                        </p:button>
+                    </p:column>
+                    
+                    <f:facet name="footer">
+                        <p:button id="novo" icon="pi pi-user-plus" outcome="/pages/FornecedorCadastro.xhtml?faces-redirect=true">
+                            <f:param name="forAcao" value="novo"/>
+                        </p:button>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

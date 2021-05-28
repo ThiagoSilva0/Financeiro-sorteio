@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:event listener="#{despesaDistribuidorBean.listar()}" type="preRenderView"/>
+
+            </f:metadata>
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="desPes">
+                <p:toolbar>
+                    <f:facet name="left">
+
+                        <p:outputLabel value="DESPESAS DISTRIBUIDORES DA EDIÇÃO, #{selecionarEtapaBean.etapaSelecionada.edicao} - #{selecionarEtapaBean.etapaSelecionada.dataEdicao} "/>
+                        <p:button outcome="/pages/DespesaDistribuidorCadastro.xhtml?faces-redirect=true" icon="pi pi-user-plus" rendered="#{autenticacaoBean.usuarioLogado.tipo == 'f'}">
+                            <f:param name="desAcao" value="novo"/>
+                        </p:button> 
+                    </f:facet>
+                    <f:facet name="right">
+                        <h:panelGrid columns="5">
+                            <h:commandLink>
+                                <img src="../resources/imagens/pdf-logo.png" style="width: 25px; height: 25px"/>
+                                <p:dataExporter type="pdf" target="tblDespesas" fileName="DESPESAS DISTRIBUIDORES DA EDIÇÃO - #{selecionarEtapaBean.etapaSelecionada.edicao} - #{selecionarEtapaBean.etapaSelecionada.dataEdicao}" encoding="ISO-8859-1"/>
+                            </h:commandLink>
+                            <i class="pi pi-ellipsis-v" style="color: #0099ff"/>
+                            <h:commandLink>
+                                <img src="../resources/imagens/excel-logo.png" style="width: 25px; height: 25px"/>
+                                <p:dataExporter type="xls" target="tblDespesas" fileName="DESPESAS DISTRIBUIDORES DA EDIÇÃO - #{selecionarEtapaBean.etapaSelecionada.edicao} - #{selecionarEtapaBean.etapaSelecionada.dataEdicao}" encoding="ISO-8859-1"/>
+                            </h:commandLink>
+                        </h:panelGrid>
+                    </f:facet>
+                </p:toolbar>
+
+
+
+                <p:dataTable id="tblDespesas" emptyMessage="Nenhuma despesa encontrada na edição" value="#{despesaDistribuidorBean.listaDespesas}" var="despesas">
+
+                    <p:column headerText="Distribuidor" filterBy="#{despesas.distribuidor.nome}">
+                        <p:outputLabel value="#{despesas.distribuidor.nome}"/>
+                    </p:column>
+
+                    <p:column headerText="Área">
+                        <p:outputLabel value="#{despesas.distribuidor.area}"/>
+                    </p:column>
+
+                    <p:column headerText="Descrição" filterBy="#{despesas.descricao}">
+                        <p:outputLabel value="#{despesas.descricao}"/>
+                    </p:column>
+
+                    <p:column headerText="Valor" width="7%">
+                        <p:outputLabel value="#{despesas.valor}" />
+                    </p:column>
+                    <p:column headerText="Opções" rendered="#{autenticacaoBean.usuarioLogado.tipo == 'f'}" width="9%" exportable="false">
+                        <p:button icon="pi pi-trash" outcome="/pages/DespesaDistribuidorCadastro.xhtml?faces-redirect=true" id="excluir">
+                            <f:param name="desAcao" value="excluir"/>
+                            <f:param name="desCod" value="#{despesas.id}"/>
+                        </p:button>
+                        <p:button icon="pi pi-pencil" outcome="/pages/DespesaDistribuidorCadastro.xhtml?faces-redirect=true" id="editar">
+                            <f:param name="desAcao" value="editar"/>
+                            <f:param name="desCod" value="#{despesas.id}"/>
+                        </p:button>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+
+
+        </ui:define>
+    </ui:composition>
+</html>

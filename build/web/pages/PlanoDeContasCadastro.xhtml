@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:viewParam name="plaAcao" value="#{planoDeContasBean.acao}"/>
+                <f:viewParam name="plaCod" value="#{planoDeContasBean.id}"/>
+                <f:event listener="#{planoDeContasBean.carregarCadastro()}" type="preRenderView"/>
+            </f:metadata>
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="cadPla">
+                <p:toolbar>
+                    <f:facet name="left">
+
+                        <p:outputLabel value="#{planoDeContasBean.acao} plano de contas" style="text-transform: uppercase"/>
+                    </f:facet>
+                </p:toolbar>
+                
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Descrição"/>
+                    <p:inputText value="#{planoDeContasBean.planoDeContas.descricao}" size="35" readonly="#{planoDeContasBean.acao == 'excluir'}"/>
+
+                    <p:outputLabel value="Setor"/>
+                    <p:inputText value="#{planoDeContasBean.planoDeContas.setor}" readonly="#{planoDeContasBean.acao == 'excluir'}"/>
+                    
+                    </h:panelGrid>
+                <h:panelGrid columns="5">
+                    <p:commandButton id="salvar" rendered="#{planoDeContasBean.acao == 'novo'}" actionListener="#{planoDeContasBean.salvar()}" icon="pi pi-save" update=":msgGlobal :cadPla"/>
+                    <p:commandButton id="novo" rendered="#{planoDeContasBean.acao == 'novo'}" actionListener="#{planoDeContasBean.novo()}" icon="pi pi-user-plus" update=":msgGlobal :cadPla"/>
+                    <p:commandButton id="editar" rendered="#{planoDeContasBean.acao == 'editar'}" actionListener="#{planoDeContasBean.editar()}" icon="pi pi-pencil" update=":msgGlobal :cadPla"/>
+                    <p:commandButton id="excluir" rendered="#{planoDeContasBean.acao == 'excluir'}" actionListener="#{planoDeContasBean.excluir()}" icon="pi pi-trash" update=":msgGlobal :cadPla"/>
+                    <p:button id="voltar" icon="pi pi-chevron-left" outcome="/pages/PlanoDeContasPesquisa.xhtml?faces-redirect=true"/>
+                    
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:viewParam name="venAcao" value="#{vendaBean.acao}" />
+                <f:viewParam name="venCod" value="#{vendaBean.id}"/>
+                <f:viewParam name="codDis" value="#{vendaBean.idDis}"/>
+                <f:event listener="#{vendaBean.carregarVenda()}" type="preRenderView"/>
+               
+
+            </f:metadata>
+        </ui:define>
+
+        <ui:define name="conteudo">
+            <p:toolbar>
+                <f:facet name="left">
+
+                    <p:outputLabel value="#{vendaBean.acao} venda" style="text-transform: uppercase"/>
+                </f:facet>
+            </p:toolbar>
+
+
+            <h:form id="cadVen">
+                <br/>
+                <strong><p:outputLabel value="Prestação de contas Títulos" style="font-size: 16px"/></strong>
+
+
+                <br/> <br/>
+                <p:panelGrid columns="2">
+
+                    <p:outputLabel value="Distribuidor"/>
+                    <p:outputLabel value="#{vendaBean.distribuidor.nome}"/>
+
+                    <p:outputLabel value="Distribuidos"/>
+                    <p:inputText value="#{vendaBean.venda.titulosDistribuidos}" size="10"/>
+
+                    <p:outputLabel value="Devolvidos"/>
+                    <p:inputText value="#{vendaBean.venda.titulosDevolvidos}" size="10"/>
+
+                    <p:outputLabel value="Vendidos"/>
+                    <p:inputText value="#{vendaBean.venda.titulosVendidos}" size="10"/>
+
+                    <p:outputLabel value="Extravios"/>
+                    <p:inputText value="#{vendaBean.venda.extravio}" size="10"/>
+
+
+                    <p:outputLabel value="Despesas"/>
+                    <p:outputLabel value="#{vendaBean.somaDespesas}"/>
+
+                    <p:outputLabel/>
+                    <p:commandButton value="somar" action="#{vendaBean.somarVendas()}" update="msgGlobal :total" />
+
+                </p:panelGrid>
+
+
+            </h:form>
+
+            <h:form id="total" style="margin-left: 350px;margin-top: -350.3px" >
+                <strong><p:outputLabel rendered="#{vendaBean.total != 0 or vendaBean.acao == 'excluir'}" value="Total a receber" style="font-size: 16px"/></strong>
+                <br/><br/>
+                
+                <p:panelGrid id="receber" columns="2">
+                    <p:outputLabel value="Total" rendered="#{vendaBean.total != 0 or vendaBean.acao == 'excluir'}"/>
+                    <p:outputLabel value="#{vendaBean.total}" rendered="#{vendaBean.total != 0 or vendaBean.acao == 'excluir'}"/>
+                    
+                    <p:outputLabel value="Recebido" rendered="#{vendaBean.total != 0 or vendaBean.acao == 'excluir'}"/>
+                    <p:inputText value="#{vendaBean.venda.recebido}" rendered="#{vendaBean.total != 0 or vendaBean.acao == 'excluir'}" size="8"/>
+                    
+                    <p:commandButton id="salvar" icon="pi pi-save" actionListener="#{vendaBean.salvar()}" rendered="#{vendaBean.total != 0 and vendaBean.acao == 'novo'}" update="msgGlobal :cadVen :total"/>
+                    <p:commandButton id="editar" icon="pi pi-pencil" actionListener="#{vendaBean.editar()}" rendered="#{vendaBean.acao == 'editar' }" update="msgGlobal :cadVen :total"/>
+                    <p:commandButton id="excluir" icon="pi pi-trash" actionListener="#{vendaBean.excluir()}" rendered="#{ vendaBean.acao == 'excluir' }" update="msgGlobal :cadVen :total"/>
+                </p:panelGrid> 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

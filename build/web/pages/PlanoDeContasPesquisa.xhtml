@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:event listener="#{planoDeContasBean.listar()}" type="preRenderView"/>
+            </f:metadata>
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="etaPes">
+                <p:toolbar>
+                    <f:facet name="left">
+
+                        <p:outputLabel value="PLANO DE CONTAS"/>
+
+                    </f:facet>
+                </p:toolbar>
+
+                <h:commandLink>
+                    <img src="../resources/imagens/icone-pdf.png" style="width: 35px; height: 35px"/>
+                    <p:dataExporter type="pdf" target="tbl" fileName="plano de contas"/>
+                </h:commandLink>
+
+                <p:commandButton value="Relatorio" action="#{planoDeContasBean.gerarRelatorio()}" ajax="false" onclick="this.form.target = '_blank'" />
+
+                <p:dataTable id="tbl" emptyMessage="Nenhum plano de contas encontrado!" value="#{planoDeContasBean.listaPlanoDeContas}" var="plano"
+                             paginator="true" rows="5">
+
+                    <p:column headerText="Código" width="5%">
+                        <p:outputLabel value="#{plano.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Descrição" width="20%">
+                        <p:outputLabel value="#{plano.descricao}"/>
+                    </p:column>
+
+                    <p:column headerText="Setor" width="15%">
+                        <p:outputLabel value="#{plano.setor}"/>
+                    </p:column>
+
+                    <p:column headerText="Opções" width="6%">
+                        <p:button id="editar" outcome="/pages/PlanoDeContasCadastro.xhtml?faces-redirect=true" icon="pi pi-pencil">
+                            <f:param name="plaAcao" value="editar"/>
+                            <f:param name="plaCod" value="#{plano.id}"/>
+                        </p:button>
+                        <p:button id="excluir" outcome="/pages/PlanoDeContasCadastro.xhtml?faces-redirect=true" icon="pi pi-trash">
+                            <f:param name="plaAcao" value="excluir"/>
+                            <f:param name="plaCod" value="#{plano.id}"/>
+                        </p:button>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:button id="novo" outcome="/pages/PlanoDeContasCadastro.xhtml?faces-redirect=true" icon="pi pi-user-plus">
+                            <f:param name="plaAcao" value="novo"/>
+                        </p:button>
+                    </f:facet>
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

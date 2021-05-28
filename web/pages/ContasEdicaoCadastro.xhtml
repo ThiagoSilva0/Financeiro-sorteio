@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+        <ui:define name="metaData">
+            <f:metadata>
+
+                <f:viewParam name="conAcao" value="#{contasEdicaoBean.acao}"/>
+                <f:viewParam name="conCod" value="#{contasEdicaoBean.id}"/>
+                <f:event listener="#{contasEdicaoBean.carregarConta()}" type="preRenderView"/>
+               
+
+
+            </f:metadata>
+        </ui:define>
+
+        <ui:define name="conteudo">
+            <p:toolbar>
+                <f:facet name="left">
+
+                    <p:outputLabel value="#{contasEdicaoBean.acao} Conta" style="text-transform: uppercase"/>
+                </f:facet>
+            </p:toolbar>
+
+            <h:form id="cadCon">
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel value="Descrição" />
+                    <p:inputText value="#{contasEdicaoBean.contasEdicao.descricao}" size="50"/>
+
+                    <p:outputLabel value="Fornecedor"/>
+                    <p:selectOneMenu value="#{contasEdicaoBean.contasEdicao.fornecedor}" converter="fornecedorConverter" >
+                        <f:selectItem itemLabel="Selecione o fornecedor" noSelectionOption="true"/>
+                        <f:selectItems value="#{contasEdicaoBean.listaFornecedores}" var="fornecedor"
+                                       itemLabel="#{fornecedor.razaoSocial}" itemValue="#{fornecedor}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Plano de contas"/>
+                    <p:selectOneMenu value="#{contasEdicaoBean.contasEdicao.planoDeContas}" converter="planoDeContasConverter" >
+                        <f:selectItem itemLabel="Selecione o plano de contas" noSelectionOption="true"/>
+                        <f:selectItems value="#{contasEdicaoBean.listaPlanoDeContas}" var="planoDeContas"
+                                       itemLabel="#{planoDeContas.setor} - #{planoDeContas.descricao}" itemValue="#{planoDeContas}"/>
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel value="Valor"/>
+                    <p:inputText value="#{contasEdicaoBean.contasEdicao.valor}"/>
+                </h:panelGrid>
+
+                <h:panelGrid columns="5">
+                    <p:commandButton id="salvar" actionListener="#{contasEdicaoBean.salvar()}" rendered="#{contasEdicaoBean.acao == 'novo'}" icon="pi pi-save" update=":msgGlobal :cadCon"/>
+                    <p:commandButton id="novo" actionListener="#{contasEdicaoBean.novo()}" rendered="#{contasEdicaoBean.acao == 'novo'}" icon="pi pi-user-plus" update=":msgGlobal :cadCon"/>
+                    <p:commandButton id="editar" actionListener="#{contasEdicaoBean.editar()}" rendered="#{contasEdicaoBean.acao == 'editar'}" icon="pi pi-pencil" update=":msgGlobal :cadCon"/>
+                    <p:commandButton id="excluir" actionListener="#{contasEdicaoBean.excluir()}" rendered="#{contasEdicaoBean.acao == 'excluir'}" icon="pi pi-pencil" update=":msgGlobal :cadCon"/>
+                    <p:button id="voltar" icon="pi pi-chevron-left" outcome="/pages/ContasEdicaoPesquisa.xhtml?faces-redirect=true"/>
+                </h:panelGrid>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+        <ui:define name="metaData">
+            <f:metadata>   
+                <f:viewParam name="apoAcao" value="#{aporteBean.acao}"/>
+            </f:metadata>
+        </ui:define>
+
+        <ui:define name="conteudo">
+            <p:toolbar>
+                <f:facet name="left">
+
+                    <p:outputLabel value="#{aporteBean.acao == 'pagar' ? 'pagar rateio':'receber aporte'}" style="text-transform: uppercase"/>
+                </f:facet>
+            </p:toolbar>
+            <h:form id="cadApo">
+                <h:panelGrid columns="2">
+                    
+                    <p:outputLabel value="Sócio"/>
+                    <p:inputText value="#{aporteBean.nomeSocio}"/>
+                    
+                    <p:outputLabel value="Valor"/>
+                    <p:inputText value="#{aporteBean.valorRecebido}"/>
+                    
+                    <p:outputLabel/>
+                    <p:commandButton icon="pi pi-money-bill" actionListener="#{aporteBean.receberAporte()}" rendered="#{aporteBean.acao == 'receber'}" update="msgGlobal :cadApo"/>
+                    <p:commandButton icon="pi pi-money-bill" actionListener="#{aporteBean.pagarAporte()}" rendered="#{aporteBean.acao == 'pagar'}" update="msgGlobal :cadApo"/>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

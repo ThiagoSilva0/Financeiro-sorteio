@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:event listener="#{usuarioBean.listar()}" type="preRenderView"/>
+            </f:metadata>
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="etaPes">
+                <p:toolbar>
+                    <f:facet name="left">
+
+                        <p:outputLabel value="USUÁRIOS"/>
+
+                    </f:facet>
+                </p:toolbar>
+
+                 
+                <p:dataTable emptyMessage="Nenhum usuário encontrado! " value="#{usuarioBean.listaUsuarios}" var="usuario"
+                             paginator="true" rows="5">
+
+                    <p:column headerText="Código">
+                        <p:outputLabel value="#{usuario.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{usuario.nome}"/>
+                    </p:column>
+
+                    <p:column headerText="CPF">
+                        <p:outputLabel value="#{usuario.cpf}"/>
+                    </p:column>
+
+                    <p:column headerText="login">
+                        <p:outputLabel value="#{usuario.login}"/>
+                    </p:column>
+
+                    <p:column headerText="Tipo">
+                        <p:outputLabel value="#{usuario.tipo == 's' ? 'sócio':'financeiro'}" style="#{usuario.tipo == 's' ? 'color: red':'color: blue'}"/>
+                    </p:column>
+
+                    <p:column headerText="Opções" width="8%">
+                        
+                        <p:button id="excluir" outcome="/pages/UsuarioCadastro.xhtml?faces-redirect=true" icon="pi pi-trash">
+                            <f:param name="usuAcao" value="excluir"/>
+                            <f:param name="usuCod" value="#{usuario.id}"/>
+                        </p:button>
+                        <p:button id="editar" outcome="/pages/UsuarioCadastro.xhtml?faces-redirect=true" icon="pi pi-pencil">
+                            <f:param name="usuAcao" value="editar"/>
+                            <f:param name="usuCod" value="#{usuario.id}"/>
+                        </p:button>
+
+                    </p:column>
+                    
+                    <f:facet name="footer">
+                        <p:button id="novo" outcome="/pages/UsuarioCadastro.xhtml?faces-redirect=true" icon="pi pi-user-plus">
+                            <f:param name="usuAcao" value="novo"/>
+                        </p:button>                        
+                    </f:facet>
+                    
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

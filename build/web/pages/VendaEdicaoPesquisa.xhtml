@@ -1,0 +1,139 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+
+        <ui:define name="metaData">
+            <f:metadata>
+
+                <f:event listener="#{vendaBean.listar()}" type="preRenderView"/>
+
+            </f:metadata>
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="venPes">
+                <p:toolbar>
+                    <f:facet name="left">
+
+                        <p:outputLabel value="VENDAS EDIÇÃO, #{selecionarEtapaBean.etapaSelecionada.edicao} - #{selecionarEtapaBean.etapaSelecionada.dataEdicao} "/>
+                        <p:button outcome="/pages/DespesaDistribuidorCadastro.xhtml?faces-redirect=true" icon="pi pi-user-plus" rendered="#{autenticacaoBean.usuarioLogado.tipo == 'f'}">
+                            <f:param name="desAcao" value="novo"/>
+                        </p:button> 
+                    </f:facet>
+
+                    <f:facet name="right">
+                        <h:panelGrid columns="5">
+                            <p:commandButton action="#{vendaBean.imprimir()}" icon="pi pi-file-pdf" ajax="false" onclick="this.form.target = '_blank'"/>
+                           
+                            <i class="pi pi-ellipsis-v" style="color: #0099ff"/>
+                            <h:commandLink>
+                                <img src="../resources/imagens/excel-logo.png" style="width: 25px; height: 25px"/>
+                                <p:dataExporter type="xls" target="tblVenda" fileName="vendas edição - #{selecionarEtapaBean.etapaSelecionada.edicao} - #{selecionarEtapaBean.etapaSelecionada.dataEdicao}" encoding="ISO-8859-1"/>
+                            </h:commandLink>
+                        </h:panelGrid>
+                    </f:facet>
+                </p:toolbar>
+
+
+                <p:dataTable id="tblVenda" emptyMessage="Nenhuma venda encontrada da edição #{selecionarEtapaBean.etapaSelecionada.edicao} - #{selecionarEtapaBean.etapaSelecionada.dataEdicao}"
+                             value="#{vendaBean.listasVenda}" var="venda">
+
+                    <f:facet name="footer">
+
+
+                    </f:facet>
+                    <p:column headerText="Distribuidor" width="18%" exportable="false">
+                        <p:outputLabel value="#{venda.distribuidor.nome}"/>
+                        <f:facet name="footer">
+                            <p:outputLabel value="TOTAL"/>
+                        </f:facet> 
+                    </p:column> 
+
+                    <p:column headerText="Área" width="20%">
+                        <p:outputLabel value="#{venda.distribuidor.area}"/>
+
+                    </p:column> 
+
+                    <p:column headerText="Retirados" >
+                        <p:outputLabel value="#{venda.titulosDistribuidos}"/>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{vendaBean.totalDistribuidos}"/>
+                        </f:facet> 
+                    </p:column> 
+
+                    <p:column headerText="Devolvidos">
+                        <p:outputLabel value="#{venda.titulosDevolvidos}"/>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{vendaBean.totalDevolvidos}"/>
+                        </f:facet> 
+                    </p:column> 
+
+                    <p:column headerText="Vendidos">
+                        <p:outputLabel value="#{venda.titulosVendidos}"/>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{vendaBean.totalVendidos}"/>
+                        </f:facet> 
+                    </p:column> 
+
+                    <p:column headerText="Extravios"  >
+                        <p:outputLabel value="#{venda.extravio}"/>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{vendaBean.totalExtravio}"/>
+                        </f:facet> 
+                    </p:column> 
+
+                    <p:column headerText="Despesas" >
+                        <p:outputLabel value="#{venda.despesas}"/>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{vendaBean.totalDespesas}"/>
+                        </f:facet> 
+                    </p:column> 
+
+                    <p:column headerText="Valor" >
+                        <p:outputLabel value="#{venda.valor}"/>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{vendaBean.totalValor}"/>
+                        </f:facet> 
+                    </p:column> 
+
+
+
+                    <p:column headerText="Faltou" >
+                        <p:outputLabel value="#{venda.recibo}"/>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{vendaBean.totalFaltou}"/>
+                        </f:facet> 
+                    </p:column> 
+                    <p:column headerText="Recebido" >
+                        <p:outputLabel value="#{venda.recebido}"/>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{vendaBean.totalRecebido}"/>
+                        </f:facet>    
+
+                    </p:column> 
+
+
+
+                    <p:column headerText="Opções" rendered="#{autenticacaoBean.usuarioLogado.tipo == 'f'}" width="8%" exportable="false">
+
+
+                        <p:button id="excluir" outcome="/pages/VendaEdicaoCadastro.xhtml?faces-redirect=true" icon="pi pi-trash">
+                            <f:param name="venAcao" value="excluir"/>
+                            <f:param name="venCod" value="#{venda.id}"/>
+                        </p:button> 
+                        <p:button id="editar" outcome="/pages/VendaEdicaoCadastro.xhtml?faces-redirect=true" icon="pi pi-pencil">
+                            <f:param name="venAcao" value="editar"/>
+                            <f:param name="venCod" value="#{venda.id}"/>
+                        </p:button> 
+                    </p:column> 
+
+
+
+
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

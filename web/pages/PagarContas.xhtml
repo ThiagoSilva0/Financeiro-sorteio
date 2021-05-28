@@ -1,0 +1,67 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/modeloGeral.xhtml">
+        <ui:define name="metaData">
+            <f:metadata>
+                <f:viewParam name="conCod" value="#{pagarContaBean.id}"/>
+                <f:viewParam name="conAcao" value="#{pagarContaBean.acao}"/>
+                <f:event listener="#{pagarContaBean.carregarConta()}" type="preRenderView"/>
+            </f:metadata>
+        </ui:define>
+
+        <ui:define name="conteudo">
+            <p:toolbar>
+                <f:facet name="left">
+
+                    <p:outputLabel value="#{pagarContaBean.acao} Conta" style="text-transform: uppercase"/>
+                </f:facet>
+            </p:toolbar>
+            <h:form id="pgrCon">
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel value="Descrição"/>
+                    <p:inputText value="#{pagarContaBean.contasEdicao.descricao}" size="65" readonly="true"/>
+
+                    <p:outputLabel value="Plano de contas"/>
+                    <p:inputText value="#{pagarContaBean.contasEdicao.planoDeContas.setor} - #{pagarContaBean.contasEdicao.planoDeContas.descricao}" readonly="true" size="50"/>
+
+                    <p:outputLabel value="Fornecedor"/>
+                    <p:inputText value="#{pagarContaBean.contasEdicao.fornecedor.razaoSocial}" size="50" readonly="true"/>
+
+                    <p:outputLabel value="Valor"/>
+                    <p:inputText value="#{pagarContaBean.contasEdicao.valor}" readonly="true" size="15"/>
+
+                    <p:outputLabel value="Forma de pagamento"/>
+                    <p:selectOneMenu value="#{pagarContaBean.contasEdicao.formaDePagamento}">
+                        <f:selectItem itemLabel="Selecione a forma de pagamento" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="ESPECIE" itemValue="ESPECIE"/>
+                        <f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Documento" />
+                    <p:selectOneMenu value="#{pagarContaBean.contasEdicao.documento}">
+                        <f:selectItem itemLabel="Selecione o tipo de documento" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="RECIBO" itemValue="RECIBO"/>
+                        <f:selectItem itemLabel="RECIBO SIMPLES" itemValue="RECIBO SIMPLES"/>
+                        <f:selectItem itemLabel="CUPOM FISCAL" itemValue="CUPOM FISCAL"/>
+                        <f:selectItem itemLabel="NOTA FISCAL" itemValue="NOTA FISCAL"/>
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Valor pago"/>
+                    <p:inputText value="#{pagarContaBean.contasEdicao.valorPago}"/>
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    <p:outputLabel/>
+
+                    <p:button icon="pi pi-chevron-left" outcome="/pages/ContasEdicaoPesquisa.xhtml?faces-redirect=true"/>
+                    <p:commandButton actionListener="#{pagarContaBean.pagar()}" icon="pi pi-save" update=":msgGlobal :pgrCon"/>
+                </h:panelGrid>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
